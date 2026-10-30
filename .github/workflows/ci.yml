@@ -1,0 +1,62 @@
+name: Seguridad de la API
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Análisis estático
+        run: npm run lint
+      - name: Pruebas con secreto inyectado
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: |
+          node -e "if (!process.env.JWT_SECRET) throw new Error('Falta el secreto del repositorio'); console.log('JWT_SECRET recibido desde GitHub Actions; valor no impreso');"
+          npm run test:cov
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: cobertura
+          path: coverage/
+          retention-days: 14
+
+  dependencias:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Auditoría de dependencias — bloquea críticos
+        run: npm audit --audit-level=critical
+
+  imagen:
+    needs: [pruebas, dependencias]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - name: Construir imagen de producción
+        run: docker build -t api-tareas:${{ github.sha }} .
+      - name: Escaneo de imagen — bloquea críticos
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:0.76.1 image --scanners vuln --severity CRITICAL \
+            --exit-code 1 api-tareas:${{ github.sha }}

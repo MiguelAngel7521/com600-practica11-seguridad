@@ -1,0 +1,14 @@
+node_modules
+.git
+.env
+.env.*
+certs
+.local
+herramientas
+evidencias
+coverage
+.agents
+.codex
+.aws
+*.pdf
+*.docx

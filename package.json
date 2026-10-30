@@ -1,0 +1,42 @@
+{
+  "name": "practica11-seguridad",
+  "version": "1.0.0",
+  "description": "COM-600: API de tareas protegida con JWT, roles, TLS y escaneo",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --testPathIgnorePatterns=int.test",
+    "test:int": "node --experimental-vm-modules node_modules/jest/bin/jest.js int.test --runInBand",
+    "test:contract": "node --experimental-vm-modules node_modules/jest/bin/jest.js contrato.test --runInBand",
+    "test:cov": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --runInBand",
+    "lint": "eslint src tests *.cjs jest.config.js --max-warnings 0 && node analizar.cjs",
+    "audit": "npm audit --audit-level=high",
+    "ci": "npm ci && npm run lint && npm run test:cov",
+    "test:db-local": "node verificar-mongo.cjs",
+    "start:tls": "node src/server-tls.js"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^18.0.9",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
+    "mongodb": "^7.7.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@testcontainers/mongodb": "12.2.1",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
+    "jest": "^30.5.2",
+    "supertest": "^7.3.1",
+    "testcontainers": "12.2.1"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.15.0"
+  }
+}

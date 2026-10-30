@@ -1,0 +1,6 @@
+{
+  "evento": "TareaCreada",
+  "version": "1.0",
+  "camposObligatorios": ["id", "titulo", "creadaEn"],
+  "tipos": { "id": "number", "titulo": "string", "creadaEn": "string" }
+}

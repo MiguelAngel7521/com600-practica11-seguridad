@@ -1,0 +1,10 @@
+{
+  "evento": "VentaConfirmada",
+  "version": 1,
+  "proveedor": "Ventas",
+  "consumidor": "Inventario",
+  "camposObligatorios": ["id", "cliente", "producto", "cantidad", "total", "estado", "fecha", "tipo", "version"],
+  "tipos": { "id": "string", "cliente": "string", "producto": "string", "cantidad": "number", "total": "number", "estado": "string", "fecha": "string", "tipo": "string", "version": "number" },
+  "valores": { "tipo": "VentaConfirmada", "version": 1, "estado": "confirmada" },
+  "restricciones": { "cantidad": "entero positivo", "total": "finito positivo", "fecha": "ISO 8601 UTC", "id": "no vacío", "cliente": "no vacío", "producto": "no vacío" }
+}

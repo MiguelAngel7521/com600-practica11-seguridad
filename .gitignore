@@ -1,0 +1,16 @@
+node_modules/
+coverage/
+.env
+.env.*
+!.env.example
+certs/
+.local/
+herramientas/
+.agents/
+.codex/
+.aws/
+evidencias/
+*.docx
+*.pdf
+*.log
+vencido.txt
